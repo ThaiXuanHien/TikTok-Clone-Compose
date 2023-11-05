@@ -9,12 +9,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import com.hienthai.tiktok_clone.designsystem.TikTokVideoPlayer
+import com.hienthai.tiktok_clone.ui.video.composeables.SideBarView
+import com.hienthai.tiktok_clone.ui.video.composeables.VideoInfoArea
 
 @UnstableApi
 @Composable
@@ -74,7 +77,7 @@ fun VideoDetailScreen(
             handleActionVideo(VideoDetailAction.ToggleVideo)
         }
         )) {
-        val (videoPlayer, sideBar) = createRefs()
+        val (videoPlayer, sideBar, videoInfoArea) = createRefs()
         TikTokVideoPlayer(player = player, modifier = Modifier.constrainAs(videoPlayer) {
             top.linkTo(parent.top)
             bottom.linkTo(parent.bottom)
@@ -83,5 +86,28 @@ fun VideoDetailScreen(
             width = Dimension.matchParent
             height = Dimension.matchParent
         })
+
+        SideBarView(
+            onAvatarClick = {},
+            onLikeClick = {},
+            onCommentClick = {},
+            onSaveClick = {},
+            onShareClick = {}, modifier = Modifier.constrainAs(sideBar) {
+                end.linkTo(parent.end, margin = 8.dp)
+                bottom.linkTo(parent.bottom, margin = 16.dp)
+            })
+
+        VideoInfoArea(
+            accountName = "Khame Pet",
+            videoName = "Funny Pets",
+            hashTags = listOf("#pet", "#funny"),
+            songName = "rock in roll",
+            modifier = Modifier.constrainAs(videoInfoArea) {
+                start.linkTo(parent.start, margin = 8.dp)
+                bottom.linkTo(sideBar.bottom)
+                end.linkTo(sideBar.start, margin = 32.dp)
+                width = Dimension.fillToConstraints
+            })
+
     }
 }
